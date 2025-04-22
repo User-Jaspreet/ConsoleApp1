@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Runtime.CompilerServices;
 using ConsoleApp1.Pages;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
@@ -9,11 +10,13 @@ using OpenQA.Selenium.Support.UI;
 public class Program
 {
     public static void Main(string[] args)
-       // Home Page homePageObj
 
     {
         // Open chrome browser
         IWebDriver driver = new ChromeDriver();
+
+        // Implicit Wait
+        WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
 
         // Login page object initiliazation and definition
         LoginPage loginPageObj = new LoginPage();
