@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using OpenQA.Selenium;
 
-namespace ConsoleApp1.Pages
+namespace Test_Analyst_Project.Pages
 {
     public class HomePage
     {
@@ -19,7 +19,7 @@ namespace ConsoleApp1.Pages
             Thread.Sleep(10000);
 
             IWebElement timeAndMaterialOption = driver.FindElement(By.XPath("/html/body/div[3]/div/div/ul/li[5]/ul/li[3]/a"));
-            timeAndMaterialOption.Click() ;
+            timeAndMaterialOption.Click();
             Thread.Sleep(5000);
 
 
@@ -31,7 +31,7 @@ namespace ConsoleApp1.Pages
 
             IWebElement administrationTab = driver.FindElement(By.XPath("/html/body/div[3]/div/div/ul/li[5]/a/span"));
             administrationTab.Click();
-            Thread.Sleep(10000);
+            Thread.Sleep(5000);
 
             IWebElement customersOption = driver.FindElement(By.XPath("/html/body/div[3]/div/div/ul/li[5]/ul/li[1]/a"));
             customersOption.Click();
@@ -40,5 +40,4 @@ namespace ConsoleApp1.Pages
     }
 }
 
-    
-      
+

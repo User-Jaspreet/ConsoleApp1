@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using NUnit.Framework;
 using OpenQA.Selenium;
 
-namespace ConsoleApp1.Pages
+namespace Test_Analyst_Project.Pages
 {
     public class LoginPage
     {
@@ -17,9 +18,18 @@ namespace ConsoleApp1.Pages
             driver.Manage().Window.Maximize();
             Thread.Sleep(1000);
 
-            // Identify username textbox and enter valid UserName
-            IWebElement usernameTextbox = driver.FindElement(By.Id("UserName"));
-            usernameTextbox.SendKeys("hari");
+            try
+            {
+                // Identify username textbox and enter valid UserName
+                IWebElement usernameTextbox = driver.FindElement(By.Id("UserName"));
+                usernameTextbox.SendKeys("hari");
+            }
+            catch (Exception)
+            {
+                Assert.Fail("Username textbox not located.");
+            }
+
+
 
             // Identify password textbox and enter valid password
             IWebElement passwordTextbox = driver.FindElement(By.Id("Password"));
@@ -31,10 +41,7 @@ namespace ConsoleApp1.Pages
             Thread.Sleep(5000);
         }
 
-        internal void LoginActions()
-        {
-            throw new NotImplementedException();
-        }
+        
     }
 
 }

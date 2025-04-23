@@ -3,18 +3,29 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using NUnit.Framework;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 
-namespace ConsoleApp1.Pages
+namespace TestAnalystProject.Tests
 {
     public class TMPage
     {
         public void CreateTimeRecord(IWebDriver driver)
         {
-            // Click on Create New button
-            IWebElement createNewButton = driver.FindElement(By.XPath("//*[@id=\"container\"]/p/a"));
-            createNewButton.Click();
+
+            try
+            {
+                // Click on Create New button
+                IWebElement createNewButton = driver.FindElement(By.XPath("//*[@id=\"container\"]/p/a"));
+                createNewButton.Click();
+            }
+            catch (Exception)
+            {
+                Assert.Fail("Create New button hasn't been found.");
+            }
+
+     
 
             // Select Time from dropdown
             IWebElement typeCodeDropdown = driver.FindElement(By.XPath("//*[@id=\"TimeMaterialEditForm\"]/div/div[1]/label"));
@@ -27,10 +38,17 @@ namespace ConsoleApp1.Pages
             // Type code in to Code textbox
             IWebElement codeTextbox = driver.FindElement(By.Id("Code"));
             codeTextbox.SendKeys("XYZ");
-
-            // Type description into Description textbox
-            IWebElement descriptionTextbox = driver.FindElement(By.Id("Description"));
-            descriptionTextbox.SendKeys("Testing");
+            try
+            {
+                // Type description into Description textbox
+                IWebElement descriptionTextbox = driver.FindElement(By.Id("Description"));
+                descriptionTextbox.SendKeys("Testing");
+            }
+            catch (Exception)
+            {
+                Assert.Fail("Description textbox not located.");
+            }
+            
 
             // Type price into Price textbox
             IWebElement priceTagOverlap = driver.FindElement(By.XPath("//*[@id=\"TimeMaterialEditForm\"]/div/div[4]/div/span[1]/span/input[1]"));
@@ -51,25 +69,23 @@ namespace ConsoleApp1.Pages
 
             IWebElement newCode = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[3]/table/tbody/tr[last()]/td[1]"));
 
-            if (newCode.Text == "XYZ")
-            {
-                Console.WriteLine("Time record created successfully!");
-            }
-            else
-            {
-                Console.WriteLine("New time record has not been created!");
-            }
+            Assert.That(newCode.Text == "XYZ", "New time record has not been created!");
+            
         }
 
 
         public void EditTimeRecord(IWebDriver driver)
         {
+
+            
+            Thread.Sleep(4000);
             // Edit the Time record
             IWebElement editButton = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[3]/table/tbody/tr[1]/td[5]/a[1]"));
             editButton.Click();
 
             //Edit code in to Code textbox
             IWebElement codeTextbox = driver.FindElement(By.Id("Code"));
+            codeTextbox.Clear();
             codeTextbox.SendKeys("ABC");
 
             // Click on Save button
@@ -78,22 +94,13 @@ namespace ConsoleApp1.Pages
             Thread.Sleep(5000);
 
             // Check if Time record has been edited successfully
-            IWebElement goToLastPageButton = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[4]/a[4]/span"));
-            goToLastPageButton.Click();
-            Thread.Sleep(3000);
-
             IWebElement newCode = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[3]/table/tbody/tr[1]/td[1]"));
 
-            if (newCode.Text == "XYZABC")
-            {
-                Console.WriteLine("Time record edited successfully!");
-            }
-            else
-            {
-                Console.WriteLine("New time record has not been edited!");
-            }
+            Assert.That(newCode.Text == "ABC", "New time record has not been edited!");
 
         }
+
+
 
         public void DeleteTimeRecord(IWebDriver driver)
         {
@@ -116,7 +123,7 @@ namespace ConsoleApp1.Pages
             Thread.Sleep(3000);
 
             {
-                Console.WriteLine("Time record deleted successfully!");
+                Assert.Pass("Time record deleted successfully!");
             }
         
             }

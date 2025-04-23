@@ -4,12 +4,13 @@ using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
+using NUnit.Framework;
 using OpenQA.Selenium;
 using OpenQA.Selenium.BiDi.Modules.Browser;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Support.UI;
 
-namespace ConsoleApp1.Pages
+namespace Test_Analyst_Project.Pages
 {
     public class CustomersPage
     {
@@ -51,9 +52,17 @@ namespace ConsoleApp1.Pages
             driver.SwitchTo().DefaultContent();
             Thread.Sleep(3000);
 
-            //Wait and click Same As Above checkbox
-            IWebElement sameAsAbove = driver.FindElement(By.Id("IsSameContact"));
-            sameAsAbove.Click();
+            try
+            {
+                //Wait and click Same As Above checkbox
+                IWebElement sameAsAbove = driver.FindElement(By.Id("IsSameContact"));
+                sameAsAbove.Click();
+            }
+            catch (Exception)
+            {
+                Assert.Fail("Same as above checkbox hasn't been found.");
+            }
+            
 
             //Type GST into the GST Textbox
             IWebElement gst = driver.FindElement(By.Id("GST"));
@@ -62,9 +71,7 @@ namespace ConsoleApp1.Pages
             //Click on save button
             IWebElement saveButton = driver.FindElement(By.Id("submitButton"));
             saveButton.Click();
-            Thread.Sleep(1000);
-
-            //Click the Administration Tab
+            Thread.Sleep(1000);      
 
             //Navigate to Customers Page
             new HomePage().NavigateToCustomersPage(driver);
@@ -77,20 +84,20 @@ namespace ConsoleApp1.Pages
 
             IWebElement newName = driver.FindElement(By.XPath("//*[@id=\"clientsGrid\"]/div[2]/table/tbody/tr[2]/td[2]"));
 
-            if (newName.Text == "NewRecord")
-            {
-                Console.WriteLine("Customers record created successfully!");
-            }
-            else
-            {
-                Console.WriteLine("Customers record has not been created!");
-            }
+            Assert.That(newName.Text == "NewRecord", "Customers record has not been created!");
+
         }
+
 
 
 
         public void EditCustomersRecord(IWebDriver driver)
         {
+            //Go to last page 
+            IWebElement goToLastPageButton = driver.FindElement(By.XPath("//*[@id=\"clientsGrid\"]/div[4]/a[4]/span"));
+            goToLastPageButton.Click();
+            Thread.Sleep(4000);
+
             // Edit the Customers record
             IWebElement editButton = driver.FindElement(By.XPath("//*[@id=\"clientsGrid\"]/div[2]/table/tbody/tr[2]/td[4]/a[1]"));
             editButton.Click();
@@ -115,34 +122,30 @@ namespace ConsoleApp1.Pages
             driver.SwitchTo().DefaultContent();
             Thread.Sleep(2000);
 
-            //Click the Administration Tab
-
             //Navigate to Customers Page
             new HomePage().NavigateToCustomersPage(driver);
             Thread.Sleep(3000);
 
             // Check if Customers record has been edited successfully
-            IWebElement goToLastPageButton = driver.FindElement(By.XPath("//*[@id=\"clientsGrid\"]/div[4]/a[4]"));
+            goToLastPageButton = driver.FindElement(By.XPath("//*[@id=\"clientsGrid\"]/div[4]/a[4]/span"));
             goToLastPageButton.Click();
-            Thread.Sleep(3000);
+            Thread.Sleep(1000);
 
-            //Get the edited name from the last row (2nd column = Name)
             IWebElement newName = driver.FindElement(By.XPath("//*[@id=\"clientsGrid\"]/div[2]/table/tbody/tr[2]/td[2]"));
 
+            Assert.That(newName.Text == "NewRecordHello", "Customers record has not been edited!");
 
-            if (newName.Text == "NewRecordHello")
-            {
-                Console.WriteLine("Customers record edited successfully!");
-            }
-            else
-            {
-                Console.WriteLine("Customers record has not been edited!");
-            }
         }
 
 
         public void DeleteCustomerRecord(IWebDriver driver)
         {
+
+            // Go to last page button
+            IWebElement goToLastPageButton = driver.FindElement(By.XPath("//*[@id=\"clientsGrid\"]/div[4]/a[4]/span"));
+            goToLastPageButton.Click();
+            Thread.Sleep(3000);
+
             // Delete the Customers record
             IWebElement deleteButton = driver.FindElement(By.XPath("//*[@id=\"clientsGrid\"]/div[2]/table/tbody/tr[2]/td[4]/a[2]"));
             deleteButton.Click();
@@ -158,19 +161,20 @@ namespace ConsoleApp1.Pages
 
 
             // Check if Customers record has been deleted
-            IWebElement goToLastPageButton = driver.FindElement(By.XPath("//*[@id=\"clientsGrid\"]/div[4]/a[4]/span"));
+           goToLastPageButton = driver.FindElement(By.XPath("//*[@id=\"clientsGrid\"]/div[4]/a[4]/span"));
             goToLastPageButton.Click();
             Thread.Sleep(3000);
 
             {
-                Console.WriteLine("Customers record deleted successfully!");
+                Assert.Pass("Customers record deleted successfully!");
             }
         }
-    }
-}
 
-
-
+       
+            }
+        }
+    
+    
 
 
 
